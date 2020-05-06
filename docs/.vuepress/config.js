@@ -5,8 +5,8 @@ module.exports = {
   themeConfig: {
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'foo', link: '/foo' },
-      { text: 'bar', link: '/bar' },
+      { text: 'foo', link: '/foo/' }, // 最后的斜杠不能少
+      { text: 'bar', link: '/bar/' },
       { text: 'GitHub', link: 'https://github.com/songning0605/blog/issues' },
     ],
     sidebar: {
