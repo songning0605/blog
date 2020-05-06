@@ -7,13 +7,12 @@ module.exports = {
       { text: 'Home', link: '/' },
       { text: 'External', link: 'https://google.com' },
     ],
-    // sidebar: {
-    //   '/': [
-    //     '',        /* / */
-    //     'contact', /* /contact.html */
-    //     'about'    /* /about.html */
-    //   ],
-    // }
-    sidebar: 'auto'
+    sidebar: {
+      '/': [
+        '',        /* / */
+        'contact', /* /contact.html */
+        'about'    /* /about.html */
+      ],
+    }
   }
 }
