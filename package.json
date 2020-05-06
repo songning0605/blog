@@ -1,0 +1,22 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "scripts": {
+    "docs:serve": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/songning0605/blog.git"
+  },
+  "keywords": [
+    "blog",
+    "vuepress",
+    "static"
+  ],
+  "author": "songning",
+  "license": "MIT",
+  "devDependencies": {
+    "vuepress": "^1.4.1"
+  }
+}
