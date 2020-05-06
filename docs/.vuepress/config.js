@@ -5,7 +5,9 @@ module.exports = {
   themeConfig: {
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'External', link: 'https://google.com' },
+      { text: 'foo', link: '/foo' },
+      { text: 'bar', link: '/bar' },
+      { text: 'GitHub', link: 'https://github.com/songning0605/blog/issues' },
     ],
     sidebar: {
       '/foo/': [
