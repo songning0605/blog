@@ -3,6 +3,14 @@ module.exports = {
   description: 'Just playing around',
   base: '/blog/',
   themeConfig: {
-    sidebar: []
+    sidebar: [
+      {
+        title: 'Get started',
+        collapsable: false,
+        children: [
+          ['/', 'test'],
+        ]
+      },
+    ]
   }
 }
