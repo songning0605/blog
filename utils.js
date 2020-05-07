@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const categoryConfig = require('./docs/.vuepress/config/category.config')
 
 const rootPath = path.join(__dirname, './docs')
 
@@ -8,8 +9,6 @@ function checkFileType(filePath) {
 }
 
 function readDirSync(filePath, result, curPath) {
-  // fs.readdirSync(filePath, function (err, files) {
-
   var dirs = fs.readdirSync(filePath).filter(el => el !== '.vuepress');
   dirs.forEach(el => {
     var info = fs.statSync(filePath + "/" + el);
@@ -33,7 +32,7 @@ function addGroupTitle(result) {
   Object.keys(result).forEach(basePath => {
     if (basePath !== '/') {
       formatRes[basePath] = [{
-        title: '分组' + basePath,
+        title: categoryConfig[basePath] || basePath,
         collapsable: false,
         sidebarDepth: 3,
         children: result[basePath]
