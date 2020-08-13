@@ -1,6 +1,11 @@
 {
   "name": "blog",
   "version": "1.0.0",
+  "description": "> 写代码 = 数据结构 + 算法 + ...",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
   "scripts": {
     "docs:serve": "vuepress dev docs",
     "docs:build": "vuepress build docs"

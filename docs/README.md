@@ -1,15 +1,14 @@
 ---
 home: true
-lang: zh-CN
-heroText: A  Personal Blog
-heroImage: /logo.jpg
-actionText: 开始 →
-actionLink: /
+heroImage: ./logo.png
+actionText: 开始阅读 →
+actionLink: /article/
 features:
-- title: A Blog
-  details: 专注写作前端博客，记录日常所得。
-- title: For Me
-  details: 故九万里，则风斯在下矣，而后乃今培风；背负青天，而莫之夭阏者，而后乃今将图南。
-- title: For Interview
-  details: 深圳
+- title: JS进阶
+  details: 掌握高级JavaScript技巧。
+- title: React深入
+  details: 从实际问题出发，由源码深入React。
+- title: 多端开发
+  details: 用JavaScript开发移动端、客户端、Web端...
+footer: MIT Licensed | Copyright © 2019-present ConardLi
 ---
