@@ -6,7 +6,7 @@
 
 `JS` 在执行的时候分为 ***同步任务*** 和 ***异步任务***，先看一张图：
 
-![image-20200821142207176](./imgs/image-20200821142207176.png)
+![image-20200821142207176](../imgs/image-20200821142207176.png)
 
 
 
@@ -90,7 +90,7 @@ console.log('console');
 
 事件循环，宏任务，微任务的关系如图所示：
 
-![event-loop](F:\blog\imgs\event-loop.png)
+![event-loop](../imgs/event-loop.png)
 
 **实战**
 
