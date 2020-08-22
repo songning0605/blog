@@ -1,6 +1,6 @@
 参考：
 
-[木易杨的实现]([https://muyiy.vip/blog/3/3.3.html#call%E7%9A%84%E6%A8%A1%E6%8B%9F%E5%AE%9E%E7%8E%B0](https://muyiy.vip/blog/3/3.3.html#call的模拟实现))
+[木易杨的实现](https://muyiy.vip/blog/3/3.3.html)
 
 [冴羽的深入系列](https://github.com/mqyqingfeng/Blog/issues/11)
 
@@ -119,4 +119,40 @@ Function.prototype.call = function(context) {
 ```
 
 ## `apply`
+
+> `apply` 的功能和 `call` 的唯一区别是 `apply` 传参是数组形式，`call` 是展开的
+
+在 `call` 的基础上修改一下来实现 `apply`
+
+```js
+Function.prototype.apply = function(context) {
+  // context 就是要设置的 this 对象，context 可以是null、undefined 或者基本类型
+  // 确保 context 为对象
+  context = (context || context === 0) ? Object(context) : window;
+    
+  // 把要执行的函数挂载在 context 上，这里有一个问题，怎么拿到要执行的函数？
+  // 要执行的函数调用了 call，所以这里边的 this 就是要执行的函数
+  context.fn = this; 
+    
+  // 通过 context.fn() 执行函数，fn 中的 this 就是 context
+  // context.fn()
+  
+  // 拿到第二个参数
+  var args = [...arguments].slice(1)[0];
+  
+  var result;
+  if (Array.isArray(agrs)) {
+    result = context.fn();
+  } else {
+    result = context.fn(...args);
+  }
+  
+  // 删除临时属性 fn
+  delete context.fn;
+  
+  return context;
+}
+```
+
+
 
