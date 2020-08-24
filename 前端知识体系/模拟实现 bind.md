@@ -35,6 +35,7 @@ function bar(name, age) {
 bar.call(foo, "Jack", 20); // 直接执行了函数
 // {value: 1, name: "Jack", age: 20}
 
+
 var bindFoo1 = bar.bind(foo, "Jack", 20); // 返回一个函数
 bindFoo1(); // 函数的 this 值是 foo
 // {value: 1, name: "Jack", age: 20}
