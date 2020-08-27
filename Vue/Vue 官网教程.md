@@ -668,3 +668,655 @@ example1.items = example1.items.filter(function (item) {
 })
 ```
 
+### 注意事项
+
+由于 JavaScript 的限制，Vue **不能检测**数组和对象的变化。[深入响应式原理](https://cn.vuejs.org/v2/guide/reactivity.html#检测变化的注意事项)中有相关的讨论。
+
+## [在 `v-for` 里使用值范围](https://cn.vuejs.org/v2/guide/list.html#在-v-for-里使用值范围)
+
+`v-for` 也可以接受整数。在这种情况下，它会把模板重复对应次数。
+
+```html
+<div>
+  <span v-for="n in 5">{{ n }} </span>
+</div>
+```
+
+结果
+
+```
+1,2,3,4,5
+```
+
+## 在 <template> 上使用 v-for
+
+类似于 `v-if`，你也可以利用带有 `v-for` 的 `<template>` 来循环渲染一段包含多个元素的内容。比如：
+
+```html
+<ul>
+  <template v-for="item in items">
+    <li>{{ item.msg }}</li>
+    <li class="divider" role="presentation"></li>
+  </template>
+</ul>
+```
+
+## [在组件上使用 `v-for`](https://cn.vuejs.org/v2/guide/list.html#在组件上使用-v-for)
+
+在自定义组件上，你可以像在任何普通元素上一样使用 `v-for`。
+
+```html
+// 当在组件上使用 v-for 时，key 现在是必须的
+
+<my-component v-for="item in items" :key="item.id"></my-component>
+```
+
+
+
+# 事件处理
+
+## [事件处理方法](https://cn.vuejs.org/v2/guide/events.html#事件处理方法)
+
+> 在 `Vue` 中，使用 `v-on` 指令来绑定一个方法，进行事件监听， `v-on` 指令可以绑定所有的 `html` 事件
+
+## [内联处理器中的方法](https://cn.vuejs.org/v2/guide/events.html#内联处理器中的方法)
+
+除了直接绑定到一个方法，也可以在内联 JavaScript 语句中调用方法，就像原生 `HTML` 绑定方法一样：
+
+```html
+<div id="example-3">
+  <button v-on:click="say('hi')">Say hi</button>
+  <button v-on:click="say('what')">Say what</button>
+</div>
+```
+
+## 访问原始 `DOM` 事件
+
+> 有时候需要访问原始的 DOM 事件，可以把 `$event` 作为函数的第二个参数，就可以访问到了，这是 `Vue` 内部做了处理
+
+例子：
+
+```html
+<button v-on:click="warn('Form cannot be submitted yet.', $event)">
+  Submit
+</button>
+```
+
+```js
+// ...
+methods: {
+  warn: function (message, event) {
+    // 现在我们可以访问原生事件对象
+    if (event) {
+      event.preventDefault()
+    }
+    alert(message)
+  }
+}
+```
+
+## 事件修饰符
+
+在事件处理程序中调用 `event.preventDefault()` 或 `event.stopPropagation()` 是非常常见的需求。尽管我们可以在方法中轻松实现这点，但更好的方式是：方法只有纯粹的数据逻辑，而不是去处理 DOM 事件细节。
+
+为了解决这个问题，Vue.js 为 `v-on` 提供了**事件修饰符**。之前提过，修饰符是由点开头的指令后缀来表示的。
+
+- `.stop`   			阻止事件冒泡
+- `.prevent`      阻止事件重载页面，包括所有会导致页面刷新的行为
+- `.capture`      在捕获阶段执行事件
+- `.self`             event.target 是自身时触发事件（只有点击事件所在的节点时才生效）
+- `.once`             事件只执行一次
+- `.passive`      见 [MDN 说明](https://developer.mozilla.org/zh-CN/docs/Web/API/EventTarget/addEventListener)
+
+```html
+<!-- 阻止单击事件继续传播，效果类似 stopPropagation 的作用 -->
+<a v-on:click.stop="doThis"></a>
+
+<!-- 提交事件不再重载页面 -->
+<form v-on:submit.prevent="onSubmit"></form>
+
+<!-- 修饰符可以串联 -->
+<a v-on:click.stop.prevent="doThat"></a>
+
+<!-- 只有修饰符 -->
+<form v-on:submit.prevent></form>
+
+<!-- 添加事件监听器时使用事件捕获模式 -->
+<!-- 即内部元素触发的事件先在此处理，然后才交由内部元素进行处理 -->
+<div v-on:click.capture="doThis">...</div>
+
+<!-- 只当在 event.target 是当前元素自身时触发处理函数 -->
+<!-- 即事件不是从内部元素触发的 -->
+<div v-on:click.self="doThat">...</div>
+```
+
+> 使用修饰符时，顺序很重要；相应的代码会以同样的顺序产生。因此，用 `v-on:click.prevent.self` 会阻止**所有的点击**，而 `v-on:click.self.prevent` 只会阻止对元素自身的点击。
+
+***2.1.4 新增***
+
+```html
+<!-- 点击事件将只会触发一次 -->
+<a v-on:click.once="doThis"></a>
+```
+
+## [按键修饰符](https://cn.vuejs.org/v2/guide/events.html#按键修饰符)
+
+> 按键修饰符的作用是给 `v-on` 绑定的事件添加键盘事件监听
+
+### 用法
+
+可以直接将 [`KeyboardEvent.key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values) 暴露的任意有效按键名转换为 kebab-case 来作为修饰符。
+
+### Vue 内置的一些修饰符
+
+- `.enter`
+- `.tab`
+- `.delete` (捕获“删除”和“退格”键)
+- `.esc`
+- `.space`
+- `.up`
+- `.down`
+- `.left`
+- `.right`
+
+### `Vue.config.keyCodes` 自定义按键修饰符别名
+
+> Vue 可以自定义按键和修饰符的对应关系，具体见官方文档	
+
+
+
+# 表单输入绑定
+
+## 绑定方法
+
+Vue 中使用 `v-model` 来把表单组件的 `data` 属性进行绑定，以实现双向绑定的效果 ，`v-model` 绑定的表单要和 `data` 中的属性存在一一对应的关系。
+
+## 绑定原理
+
+- text 和 textarea 元素使用 `value` property 和 `input` 事件；
+- checkbox 和 radio 使用 `checked` property 和 `change` 事件；
+- select 字段将 `value` 作为 prop 并将 `change` 作为事件。
+
+
+
+# 组件基础
+
+## 组件命名规范
+
+参考这里：[组件名为多个单词](https://cn.vuejs.org/v2/style-guide/#组件名为多个单词必要)
+
+**组件名应该始终是多个单词的，根组件 `App` 以及 `<transition>`、`<component>` 之类的 Vue 内置组件除外。**
+
+这样做可以避免跟现有的以及未来的 HTML 元素[相冲突](https://w3c.github.io/webcomponents/spec/custom/#valid-custom-element-name)，因为所有的 HTML 元素名称都是单个单词的。
+
+#### 反例:
+
+```js
+Vue.component('todo', {
+  // ...
+})
+
+export default {
+  name: 'Todo',
+  // ...
+}
+```
+
+#### 好例子
+
+```js
+Vue.component('todo-item', {
+  // ...
+})
+
+export default {
+  name: 'TodoItem',
+  // ...
+}
+```
+
+## `data` 必须是一个函数
+
+> data 必须是一个函数的原因是运用了js中函数有独立作用域的原理，保证了每一个组件数据都有自己独立的作用域，不会相互影响
+
+参考：[为什么vue中data必须是一个函数](https://www.jianshu.com/p/839cbef3be41)
+
+`Object` 是引用数据类型,如果不用 `function`  返回,每个组件的 `data`  都是内存的同一个地址,一个数据改变了其他也改变了;
+
+`javascipt` 只有函数构成作用域(注意理解作用域,只有`函数的{}`构成作用域,`对象的{}`以及 `if(){}`都不构成作用域)，`data` 是一个函数时，每个组件实例都有自己的作用域，每个实例相互独立,不会相互影响。
+
+## 通过 `prop` 向子组件传递数据
+
+> 1. 组件实例有一个 `props` 属性，用来定义组件可以接收的 `prop`，`props` 可以是一个简单的数组列表，也可以是一个对象。
+> 2. 在组件实例中访问 `props` 就像访问 `data` 中的数据一样。
+
+### `props`定义为列表
+
+> 当 `props` 定义为列表时，无法指定 `prop` 的类型和默认值。**这种用法不推荐。**
+
+```js
+Vue.component('blog-post', {
+  props: ['title', 'name', 'value'],
+  template: '<h3>{{ title }}</h3>'
+})
+```
+
+### `props` 定义为对象
+
+> 当 `props` 定义为对象时，可以指定 `prop` 的类型和默认值。**这是推荐的用法。**
+
+```js
+props: {
+  status: String
+}
+
+// 更好的做法！
+props: {
+  status: {
+    type: String,
+    required: true,
+    validator: function (value) {
+      return [
+        'syncing',
+        'synced',
+        'version-conflict',
+        'error'
+      ].indexOf(value) !== -1
+    }
+  }
+}
+```
+
+## 单个根元素
+
+组件模板只能有一个根元素，和 `React` 中组件只能有一个根元素一样。
+
+## 组件通信
+
+待研究
+
+## [通过插槽分发内容](https://cn.vuejs.org/v2/guide/components.html#通过插槽分发内容)
+
+待研究
+
+## [动态组件](https://cn.vuejs.org/v2/guide/components.html#动态组件)
+
+可以通过 `Vue` 内置的 `<component>` 元素加一个特殊的 `is` 属性来实现动态加载组件的功能：
+
+```html
+<!-- 组件会在 `currentTabComponent` 改变时改变 -->
+<component v-bind:is="currentTabComponent"></component>
+```
+
+在上述示例中，`currentTabComponent` 可以包括
+
+- 已注册组件的名字，或
+- 一个组件的选项对象
+
+## [解析 DOM 模板时的注意事项](https://cn.vuejs.org/v2/guide/components.html#解析-DOM-模板时的注意事项)
+
+有些 HTML 元素，诸如 `<ul>`、`<ol>`、`<table>` 和 `<select>`，对于哪些元素可以出现在其内部是有严格限制的。而有些元素，诸如 `<li>`、`<tr>` 和 `<option>`，只能出现在其它某些特定的元素内部。
+
+这会导致我们使用这些有约束条件的元素时遇到一些问题。例如：
+
+```
+<table>
+  <blog-post-row></blog-post-row>
+</table>
+```
+
+这个自定义组件 `<blog-post-row>` 会被作为无效的内容提升到外部，并导致最终渲染结果出错。幸好这个特殊的 `is` attribute 给了我们一个变通的办法：
+
+```
+<table>
+  <tr is="blog-post-row"></tr>
+</table>
+```
+
+需要注意的是**如果我们从以下来源使用模板的话，这条限制是\*不存在\*的**：
+
+- 字符串 (例如：`template: '...'`)
+- [单文件组件 (`.vue`)](https://cn.vuejs.org/v2/guide/single-file-components.html)
+- `<script type="text/x-template">`
+
+
+
+# 深入了解组件
+
+## `Prop` 
+
+### `Prop` 的大小写
+
+- `HTML` 中的 `attribute` 名是大小写不敏感的，所以浏览器会把所有大写字符解释为小写字符。
+
+- `camelCase` (驼峰命名法) 的 `prop` 名需要使用其等价的 `kebab-case` (短横线分隔命名) 命名。
+
+
+
+在 `JavaScript` 中定义是 `camelCase` 的：
+
+```js
+Vue.component('blog-post', {
+  // 在 JavaScript 中是 camelCase 的
+  props: ['postTitle'],
+  template: '<h3>{{ postTitle }}</h3>'
+})
+```
+
+
+
+在 `HTML` 中是 `kebab-case` 的：
+
+```html
+<!-- 在 HTML 中是 kebab-case 的 -->
+<blog-post post-title="hello!"></blog-post>
+```
+
+### `Prop` 的传递
+
+#### 传递静态 `props`
+
+```js
+// 传递静态值
+<blog-post title="My journey with Vue"></blog-post>
+```
+
+#### 传递动态 `props`
+
+> 可以通过 `v-bind` 动态赋值
+
+```html
+<!-- 动态赋予一个变量的值 -->
+<blog-post v-bind:title="post.title"></blog-post>
+
+<!-- 动态赋予一个复杂表达式的值 -->
+<blog-post
+  v-bind:title="post.title + ' by ' + post.author.name"
+></blog-post>
+```
+
+#### 传递数字
+
+> 传递数字时，一定要使用 `v-bind`
+
+```html
+<!-- 即便 `42` 是静态的，我们仍然需要 `v-bind` 来告诉 Vue -->
+<!-- 这是一个 JavaScript 表达式而不是一个字符串。-->
+<blog-post v-bind:likes="42"></blog-post>
+
+<!-- 用一个变量进行动态赋值。-->
+<blog-post v-bind:likes="post.likes"></blog-post>
+```
+
+#### [传入一个布尔值](https://cn.vuejs.org/v2/guide/components-props.html#传入一个布尔值)
+
+```html
+<!-- 包含该 prop 没有值的情况在内，都意味着 `true`。-->
+<blog-post is-published></blog-post>
+
+<!-- 即便 `false` 是静态的，我们仍然需要 `v-bind` 来告诉 Vue -->
+<!-- 这是一个 JavaScript 表达式而不是一个字符串。-->
+<blog-post v-bind:is-published="false"></blog-post>
+
+<!-- 用一个变量进行动态赋值。-->
+<blog-post v-bind:is-published="post.isPublished"></blog-post>
+```
+
+### [传入一个数组](https://cn.vuejs.org/v2/guide/components-props.html#传入一个数组)
+
+```html
+<!-- 即便数组是静态的，我们仍然需要 `v-bind` 来告诉 Vue -->
+<!-- 这是一个 JavaScript 表达式而不是一个字符串。-->
+<blog-post v-bind:comment-ids="[234, 266, 273]"></blog-post>
+
+<!-- 用一个变量进行动态赋值。-->
+<blog-post v-bind:comment-ids="post.commentIds"></blog-post>
+```
+
+### [传入一个对象](https://cn.vuejs.org/v2/guide/components-props.html#传入一个对象)
+
+```html
+<!-- 即便对象是静态的，我们仍然需要 `v-bind` 来告诉 Vue -->
+<!-- 这是一个 JavaScript 表达式而不是一个字符串。-->
+<blog-post
+  v-bind:author="{
+    name: 'Veronica',
+    company: 'Veridian Dynamics'
+  }"
+></blog-post>
+
+<!-- 用一个变量进行动态赋值。-->
+<blog-post v-bind:author="post.author"></blog-post>
+```
+
+### [传入一个对象的所有 `property`](https://cn.vuejs.org/v2/guide/components-props.html#传入一个对象的所有-property)
+
+想要将一个对象的所有 property 都作为 prop 传入，你可以使用不带参数的 `v-bind` (取代 `v-bind:prop-name`)。例如，对于一个给定的对象 `post`：
+
+```js
+post: {
+  id: 1,
+  title: 'My Journey with Vue'
+}
+```
+
+```js
+<blog-post v-bind="post"></blog-post>
+```
+
+等价于
+
+```html
+<blog-post
+  v-bind:id="post.id"
+  v-bind:title="post.title"
+></blog-post>
+```
+
+## [单向数据流](https://cn.vuejs.org/v2/guide/components-props.html#单向数据流)
+
+所有的 prop 都使得其父子 prop 之间形成了一个**单向下行绑定**：父级 prop 的更新会向下流动到子组件中，但是反过来则不行。这样会防止从子组件意外变更父级组件的状态，从而导致你的应用的数据流向难以理解。
+
+额外的，每次父级组件发生变更时，子组件中所有的 prop 都将会刷新为最新的值。这意味着你**不**应该在一个子组件内部改变 prop。如果你这样做了，Vue 会在浏览器的控制台中发出警告。
+
+这里有两种常见的试图变更一个 prop 的情形：
+
+1. **这个 prop 用来传递一个初始值；这个子组件接下来希望将其作为一个本地的 prop 数据来使用。**在这种情况下，最好定义一个本地的 data property 并将这个 prop 用作其初始值：
+
+   ```js
+   props: ['initialCounter'],
+   data: function () {
+     return {
+       counter: this.initialCounter
+     }
+   }
+   ```
+
+2. **这个 prop 以一种原始的值传入且需要进行转换。**在这种情况下，最好使用这个 prop 的值来定义一个计算属性：
+
+   ```js
+   props: ['size'],
+   computed: {
+     normalizedSize: function () {
+       return this.size.trim().toLowerCase()
+     }
+   }
+   ```
+
+注意在 JavaScript 中对象和数组是通过引用传入的，所以对于一个数组或对象类型的 prop 来说，在子组件中改变变更这个对象或数组本身**将会**影响到父组件的状态。
+
+## [Prop 验证](https://cn.vuejs.org/v2/guide/components-props.html#Prop-验证)
+
+> `prop` 验证发生在组件实例创建之前，所以 `data,computed` 等属性时不可以访问的。
+
+```js
+props: {
+    // 基础的类型检查 (`null` 和 `undefined` 会通过任何类型验证)
+    propA: Number,
+    // 多个可能的类型
+    propB: [String, Number],
+    // 必填的字符串
+    propC: {
+      type: String,
+      required: true
+    },
+    // 带有默认值的数字
+    propD: {
+      type: Number,
+      default: 100
+    },
+    // 带有默认值的对象
+    propE: {
+      type: Object,
+      // 对象或数组默认值必须从一个工厂函数获取
+      default: function () {
+        return { message: 'hello' }
+      }
+    },
+    // 自定义验证函数
+    propF: {
+      validator: function (value) {
+        // 这个值必须匹配下列字符串中的一个
+        return ['success', 'warning', 'danger'].indexOf(value) !== -1
+      }
+    }
+  }
+```
+
+## [非 Prop 的 Attribute](https://cn.vuejs.org/v2/guide/components-props.html#非-Prop-的-Attribute)
+
+> 传递给一个组件的 `attribute` 在组件的 `props` 属性上没有定义，称为非 `prop` `attribute`。这些 `attribute` 会被添加到组件的根元素上。这是因为 组件的根元素默认会继承父组件的 `attribute`
+
+
+
+## 自定义事件
+
+### 事件名
+
+> 不同于 `prop`，事件名不存在任何的大小写转换。
+
+### [将原生事件绑定到组件](https://cn.vuejs.org/v2/guide/components-custom-events.html#将原生事件绑定到组件)
+
+> 1. 可以使用 `v-on` 的 `.native` 修饰符，给自定义组件添加原生事件。
+> 2. `.native` 只能用在自定义组件上。
+> 3. 给自定义组件添加的事件绑定，默认会添加在组件的根元素上。
+
+有时候并不想把事件添加在组件的根元素上，而是想自定义。Vue 提供了一个 `$listeners` property，它是一个对象，***里面包含了作用在这个组件上的所有监听器。***例如：
+
+```js
+{
+  focus: function (event) { /* ... */ }
+  input: function (value) { /* ... */ },
+}
+```
+
+拥有了`$listeners`对象之后，就可以从`$listeners`中拿到父组件传递的任何监听函数，进行自定义绑定，透传都可以。
+
+### [`.sync` 修饰符](https://cn.vuejs.org/v2/guide/components-custom-events.html#sync-修饰符)
+
+`.sync` 的作用是为了更方便的让子组件更新父组件中的属性值。
+
+举例：
+
+```jsx
+// 父组件
+<home-page :valueChild.sync="valueChild"></home-page>
+
+data: function() {
+    return {
+        valueChild: true
+    }
+},
+
+// 子组件
+<button @click="clickHandler">更新</button>
+
+props: {
+    valueChild: {
+    	type: Boolean
+    }
+},
+methods: {
+    clickHandler() {
+    	this.$emit('update:valueChild', false)
+    }
+}
+```
+
+> 暂时不知道怎么更新对象，作为问题，待研究
+
+## 插槽
+
+> 和插槽相关的额内容有 `<slot></slot>` 标签 `v-slot` 指令，插槽提供了一种内容分发机制。
+
+### `<slot></slot>`
+
+正常情况下，一个自定义组件开始和结束标签的内容是不会被渲染的。`<slot></slot>` 标签可以***用在自定义组件内部***，用来渲染标签之间的内容，普通文本和 `html` 标签都可以，甚至是组件，也可以。
+
+#### 不带名字的 `slot`
+
+> 默认情况下，标签之间的内容都会渲染在 `<slot></slot>` 标签之间，当 `<slot></slot>` 有重复时，会重复渲染。
+
+```html
+// 子组件
+<template>
+	<div>
+		<slot></slot>
+	</div>
+</template>
+
+// 父组件
+<parent-component>
+	<div>
+        这里边的任何内容都会被渲染到子组件的<slot></slot>标签所在的位置
+    </div>
+</parent-component>
+```
+
+#### 带名字的 `slot`
+
+> 带名字的 `slot`，又称具名插槽，需要配合 `v-slot` 指令一起使用。
+
+1. `slot` 标签有一个 `name` 属性，制定了 `name` 属性的 `slot` 标签称为具名插槽。
+2. 父组件中使用 `v-slot` 指令，定向渲染内容。
+
+举个例子：
+
+```html
+<!-- BaiscLayout组件 -->
+<template>
+	<div>
+		<header>
+			<slot name="header"></slot>
+		</header>
+		<main>
+			<slot></slot>
+		</main>
+		<footer>
+			<slot name="footer"></slot>
+		</footer>
+	</div>
+</template>
+
+
+<!-- 引用BaiscLayout组件时的写法 -->
+<basic-layout>
+    <!-- 通过 v-slot 指定区块名称，
+		 v-slot 指令建议总是写在 template 标签上
+		 制定了名称的内容会染在 basic-layout 组件内对应名称的 slot 标签上，
+		 如果名称写错了，没有对应上，则不会渲染，也不会渲染在默认 slot 标签内。
+	-->
+    <template v-slot:header>
+        <h3>我是title</h3>
+    </template>
+    <template v-slot:footer>
+        <h3>我是 footer</h3>
+    </template>
+    
+    <!-- 所有没有通过 v-slot 指定名称的内容将会渲染在默认的，不具名 slot 标签上 -->
+    <p>我是内容我是内容<我是内容/p>
+    <p>我是内容我是内容<我是内容/p>
+    <p>我是内容我是内容<我是内容/p>
+    <p>我是内容我是内容<我是内容/p>
+</basic-layout>
+```
