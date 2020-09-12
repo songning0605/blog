@@ -1,15 +1,12 @@
-# 确保脚本抛出遇到的错误
+#!/usr/bin/env sh
+
 set -e
+git push;
+node .bin/changeBase.js /just-react/;
 
-# 生成静态文件
-npm run docs:build
+npm run build;
 
-# 进入生成的文件夹
-cd docs/.vuepress/dist
-
-# 如果是发布到自定义域名
-# echo 'www.example.com' > CNAME
-
+cd dist;
 git init
 git add -A
 git commit -m 'deploy'
@@ -18,7 +15,10 @@ git commit -m 'deploy'
 # git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git master
 
 # 如果发布到 https://<USERNAME>.github.io/<REPO>
-git push -f git@github.com:songning0605/blog.git master:gh-pages
+git push -f git@github.com:songning0605/just-react.git master:gh-pages
 
 cd -
-© 2020 GitHub, Inc
+
+rm -rf dist
+
+node .bin/changeBase.js 
