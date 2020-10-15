@@ -1,0 +1,91 @@
+<div style="margin: 12px -12px; font-size: 18px; font-weight: 500; background: #f4f4f4;padding: 8px 10px;border-radius:2px;">个人信息</div>
+
+姓名：宋宁宁					性别：男
+电话：15538182232		邮箱：songning0605@163.com
+
+<div style="margin: 12px -12px; font-size: 18px; font-weight: 500; background: #f4f4f4;padding: 8px 10px;border-radius:2px;">学习经历</div>
+2011.9-2015.7     华北水利水电大学     统计学   本科 
+
+<div style="margin: 12px -12px; font-size: 18px; font-weight: 500; background: #f4f4f4;padding: 8px 10px;border-radius:2px;">专业技能</div>
+- 熟练使用`React`进行项目开发，拥有 3 年`React`开发经验，了解 `React` 周边生态。
+- 了解`Vue`基本语法，能够进行项目开发，了解`Vue`周边生态。
+- 熟练掌握 `JS`、`ES6+` 语法。
+- 了解`webpack`常用配置，能够独立搭建 `React`, `Vue`等环境。
+- 了解`typescript`基本语法和用法。
+- 了解`Java`基本语法和用法，拥有 1 年项目开发经验。
+
+<div style="margin: 12px -12px; font-size: 18px; font-weight: 500; background: #f4f4f4;padding: 8px 10px;border-radius:2px;">工作经历</div>
+
+<div style="margin: 10px 0; font-size: 16px; font-weight: 500;">深圳傲基科技股份有限公司（2018年3月 - 至今）</div>
+
+<div style="margin: 10px 0; font-size: 13px; font-weight: 500;">1. 跨境电商运营标准化系统（React）（2019/8 - 至今）</div>
+
+公司内部自研系统，供亚马逊运营人员进行店铺管理，Amazon标签，风险规则配置，销售业绩可视化，待办处理等运营赋能操作
+
+<div style="margin: 10px 0; font-size: 12px; font-weight: 500;">个人职责</div>
+
+- 项目基础方案选型
+- 提炼 10+ 公共组件
+- 完成 40+ 页面开发
+<div style="margin: 6px 0; font-size: 12px; font-weight: 500;">技术点</div>
+
+- 一期采用 `umi 2.x` + `antd3.x`
+- 二期采用 `umi 3.x` + `ant4.x` + `typescript` + `qiankun`
+
+<div style="margin: 10px 0; font-size: 12px; font-weight: 500;">问题和解决方案</div>
+
+- 打包出来之后`umi.js`的体积会很大，抽离`moment`，体积从1.4M降到 1M，但是`moment` 有接近800k，继续用 dayjs 替换 moment，问题得到解决。
+
+- 抽离的`antIcon`体积过大，自定义`icon`引入文件，设置`antIcon`默认路径指向自定义文件，体积由1.7M下降为1.2M，只解决了部分问题
+
+<div style="margin: 10px 0; font-size: 13px; font-weight: 500;">2. 广告系统（Vue）（2020/6）</div>
+
+公司自研系统，管理亚马逊广告费用
+<div style="margin: 10px 0; font-size: 12px; font-weight: 500;">个人职责</div>
+
+- 负责部分页面开发
+- 负责图表可视化对接标准制定
+<div style="margin: 6px 0; font-size: 12px; font-weight: 500;">技术点</div>
+
+- `Vue`，`ElementUI`，`Echarts`相关
+
+<div style="margin: 10px 0; font-size: 13px; font-weight: 500;">3. 客服系统（React）（2018/9 - 2019/1）</div>
+
+公司内部自研系统，供亚马逊运营人员进行工单邮件处理，工单处理，订单取消、补发，退款等操作
+
+<div style="margin: 10px 0; font-size: 12px; font-weight: 500;">个人职责</div>
+
+- 项目基础方案选型
+- 提炼 Form，Table，Modal等一些常用组件
+- 完成 20+ 页面开发
+<div style="margin: 6px 0; font-size: 12px; font-weight: 500;">技术点</div>
+- `roadhog` + `Dva` + `React 16.7` + `less`
+
+<div style="margin: 10px 0; font-size: 13px; font-weight: 500;">4. 其他项目（React）</div>
+
+在傲基任职期间财务对账系统、费用报销系统、账号管理等其他  4 个项目
+
+- 费用报销系统（2018/4 - 2018/9）
+- 账号管理系统（2019/3 - 2019/5）
+
+相关技术：`react` `redux`  `antd` `webpack`
+
+
+
+<div style="margin: 10px 0; font-size: 16px; font-weight: 500;">合伙独立开发项目（2017年8月 - 2018年2月）</div>
+
+职责：担任`Java`开发工程师，同时开始学习开发`React`项目。
+
+
+
+<div style="margin: 10px 0; font-size: 16px; font-weight: 500;">北京市网拍天下网络科技有限公司（2016年12月 - 2017年8月）</div>
+
+职责：担任`Java`开发工程师，参与过 3 个`Java`项目开发
+
+<div style="margin: 12px -12px; font-size: 18px; font-weight: 500; background: #f4f4f4;padding: 8px 10px;border-radius:2px;">自我评价</div>
+
+本人于15年毕业，15年到16年6月份在做软件培训讲师的工作，后自学转行Java开发工程师，并在工作的过程中，由于工作需要担任前端开发工程师一职至今，拥有 3 年前端开发经验和 1 年 `Java` 开发经验。
+
+<div style="margin: 12px -12px; font-size: 18px; font-weight: 500; background: #f4f4f4;padding: 8px 10px;border-radius:2px;">致谢</div>
+
+感谢您在百忙之中阅读我的简历，期待您的回复！
